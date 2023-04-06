@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<!-- saved from url=(0026)https://davidkebo.com/cudd -->
+<html lang="en" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# " class=" js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+<meta name="title" content="The CUDD package, BDD, ADD Tutorial and examples | David Kebo">
+<meta name="description" content="CUDD is a package for the manipulation of Decision Diagrams (BDD or ADD). This tutorial provides practical examples of how to use CUDD.">
+<meta name="abstract" content="CUDD, BDD Binary Decision Diagram, ADD Algebraic Decision Diagram,  Binary tree, Matrix, Transfer function, Boolean Algebra">
+<meta name="keywords" content="CUDD, BDD Binary Decision Diagram, ADD Algebraic Decision Diagram,  Binary tree, Matrix, Transfer function, Boolean Algebra">
+<meta name="Generator" content="Drupal 8 (https://www.drupal.org)">
+<meta name="MobileOptimized" content="width">
+<meta name="HandheldFriendly" content="true">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="https://davidkebo.com/sites/default/files/favicon%20%282%29.ico" type="image/vnd.microsoft.icon">
+<link rel="canonical" href="https://davidkebo.com/cudd">
+<link rel="shortlink" href="https://davidkebo.com/node/15">
+<link rel="delete-form" href="https://davidkebo.com/node/15/delete">
+<link rel="edit-form" href="https://davidkebo.com/node/15/edit">
+<link rel="version-history" href="https://davidkebo.com/node/15/revisions">
+<link rel="revision" href="https://davidkebo.com/cudd">
+
+    <title>The CUDD package, BDD, ADD Tutorial and examples | David Kebo</title>
+    <link rel="stylesheet" href="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/css_fJSGC_69MLA2PukKR_x1DKCH0YRzHwSq0z6AwbLz4BQ.css" media="all">
+<link rel="stylesheet" href="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/css_wdGWWx_RM4lXNjnKaXGtyaNEGEQjunS9DVEAdbEPLlA.css" media="all">
+
+    
+<!--[if lte IE 8]>
+<script src="/sites/default/files/js/js_VtafjXmRvoUgAzqzYTA3Wrjkx9wcWhjP0G4ZnnqRamA.js"></script>
+<![endif]-->
+
+  </head>
+  <body class="path-node page-node-type-page">
+    <a href="https://davidkebo.com/cudd#main-content" class="visually-hidden focusable skip-link">
+      Skip to main content
+    </a>
+    
+    
+
+<!-- Header and Navbar -->
+<header class="main-header">
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+      <div class="row">
+      <div class="navbar-header col-md-3">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+                    <div class="region region-header">
+    <div id="block-drupal8-zymphonies-theme-branding" class="site-branding block block-system block-system-branding-block">
+  
+    
+          <div class="brand site-name">
+              <div class="site-branding__name">
+          <a href="https://davidkebo.com/" title="Home" rel="home">David Kebo Tutorials</a>
+        </div>
+                </div>
+  </div>
+
+  </div>
+
+              </div>
+
+      <!-- Navigation -->
+      <div class="col-md-9">
+                    <div class="region region-primary-menu">
+    <nav role="navigation" aria-labelledby="block-drupal8-zymphonies-theme-main-menu-menu" id="block-drupal8-zymphonies-theme-main-menu">
+            
+  <h2 class="visually-hidden">Main navigation</h2>
+  
+
+        
+              <ul class="sm menu-base-theme" id="main-menu" data-smartmenus-id="16807686321461392">
+                      <li>
+        <a href="https://davidkebo.com/home" data-drupal-link-system-path="node/1">Home</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/my-resume" data-drupal-link-system-path="node/2">Resume</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/research" data-target="#" data-toggle="dropdown" class="has-submenu" id="sm-16807686321461392-1" aria-haspopup="true" aria-controls="sm-16807686321461392-2" aria-expanded="false"><span class="sub-arrow">+</span>Research</a>
+                                  <ul id="sm-16807686321461392-2" role="group" aria-hidden="true" aria-labelledby="sm-16807686321461392-1" aria-expanded="false">
+                      <li>
+        <a href="https://davidkebo.com/research" data-drupal-link-system-path="node/14">Research posters</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/cudd" title="CUDD package tutorial" data-drupal-link-system-path="node/15" class="is-active">The CUDD package</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/matrix-multiplication" title="Matrix multiplication" data-drupal-link-system-path="node/17">Matrix multiplication</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/verilog-parser" data-drupal-link-system-path="node/16">A verilog parser</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/verilog-binary-decision-diagram-parser" title="Verilog to Binary Decision Diagram Parser" data-drupal-link-system-path="node/19">Verilog to BDD Parser</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/isc2verilog" data-drupal-link-system-path="node/22">ISCAS85 to Verilog</a>
+                  </li>
+        </ul>
+  
+            </li>
+                  <li>
+        <a href="https://davidkebo.com/hardware" data-target="#" data-toggle="dropdown" class="has-submenu" id="sm-16807686321461392-3" aria-haspopup="true" aria-controls="sm-16807686321461392-4" aria-expanded="false"><span class="sub-arrow">+</span>Hardware projects</a>
+                                  <ul id="sm-16807686321461392-4" role="group" aria-hidden="true" aria-labelledby="sm-16807686321461392-3" aria-expanded="false">
+                      <li>
+        <a href="https://davidkebo.com/microcontroller-interfacing" title="Microcontroller Interfacing" data-drupal-link-system-path="node/20">Microcontroller Interfacing (Introduction)</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/microcontroller-interfacing-2" title="Microcontroller Interfacing" data-drupal-link-system-path="node/23">Microcontroller Interfacing (ADC)</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/microcontroller-interfacing-3" title="Microcontroller Interfacing" data-drupal-link-system-path="node/24">Microcontroller Interfacing (LEDs)</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/microcontroller-interfacing-4" title="Microcontroller Interfacing" data-drupal-link-system-path="node/25">Microcontroller Interfacing (Timers)</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/tinyos-embedded-systems" data-drupal-link-system-path="node/3">Embedded systems</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/android" data-drupal-link-system-path="node/4">Android</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/femtocell" data-drupal-link-system-path="node/11">Femtocell</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/digital-systems" data-drupal-link-system-path="node/12">Digital Systems</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/benchmark" data-drupal-link-system-path="node/21">Benchmark circuits</a>
+                  </li>
+        </ul>
+  
+            </li>
+                  <li>
+        <a href="https://davidkebo.com/software" data-target="#" data-toggle="dropdown" class="has-submenu" id="sm-16807686321461392-5" aria-haspopup="true" aria-controls="sm-16807686321461392-6" aria-expanded="false"><span class="sub-arrow">+</span>Software Projects</a>
+                                  <ul id="sm-16807686321461392-6" role="group" aria-hidden="true" aria-labelledby="sm-16807686321461392-5" aria-expanded="false">
+                      <li>
+        <a href="https://davidkebo.com/software" data-drupal-link-system-path="node/13">All Software</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/open-gl" data-drupal-link-system-path="node/6">Open GL</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/java" data-drupal-link-system-path="node/10">Java</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/unix" data-drupal-link-system-path="node/7">Unix</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/visual-studio" data-drupal-link-system-path="node/8">Visual studio</a>
+                  </li>
+                  <li>
+        <a href="https://davidkebo.com/iphone-os" data-drupal-link-system-path="node/9">iPhone OS</a>
+                  </li>
+        </ul>
+  
+            </li>
+                  <li>
+        <a href="https://davidkebo.com/links" data-drupal-link-system-path="node/5">Links</a>
+                  </li>
+        </ul>
+  
+
+
+  </nav>
+
+  </div>
+
+              
+      </div>
+      <!--End Navigation -->
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner -->
+    <!-- End Banner -->
+
+</header>
+<!--End Header & Navbar -->
+
+
+<!--Highlighted-->
+      <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+            <div class="region region-highlighted">
+    
+
+
+  </div>
+
+        </div>
+      </div>
+    </div>
+  <!--End Highlighted-->
+
+
+<!-- Start Top Widget -->
+<!--End Top Widget -->
+
+
+<!-- Page Title -->
+<!-- End Page Title ---- >
+
+
+<!-- layout -->
+<div id="wrapper">
+  <!-- start: Container -->
+  <div class="container">
+    
+    <!--Content top-->
+          <!--End Content top-->
+    
+    <!--start:content -->
+    <div class="row">
+      <div class="col-md-12">  <div class="region region-breadcrumb">
+    <div id="block-drupal8-zymphonies-theme-breadcrumbs" class="block block-system block-system-breadcrumb-block">
+  
+    
+        <nav class="breadcrumb" role="navigation" aria-labelledby="system-breadcrumb">
+    <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+    <ul>
+          <li>
+                  <a href="https://davidkebo.com/">Home</a>
+         &gt;
+      </li>
+          <li>
+                  <a href="https://davidkebo.com/cudd">The CUDD package, BDD and ADD Tutorial </a>
+         &gt;
+      </li>
+        </ul>
+  </nav>
+
+  </div>
+
+  </div>
+</div>
+    </div>
+
+    <div class="row layout">
+      <!--- Start Left SideBar -->
+            <!---End Right SideBar -->
+
+      <!--- Start content -->
+              <div class="content_layout">
+          <div class="col-md-12">
+              <div class="region region-content">
+    <div id="block-drupal8-zymphonies-theme-content" class="block block-system block-system-main-block">
+  
+    
+      
+<article data-history-node-id="15" role="article" about="/cudd" typeof="schema:WebPage" class="node node--type-page node--view-mode-full">
+
+  
+      <span property="schema:name" content="The CUDD package, BDD and ADD Tutorial " class="hidden"></span>
+
+
+  
+  <div class="node__content">
+    
+            <div property="schema:text"><div class="row">
+<article><div style="text-align:center; margin-bottom:30px;">
+<h1>CUDD Tutorials</h1>
+<h1>Learn it by examples</h1>
+<h4><i>By David Kebo Houngninou</i></h4>
+</div>
+<p>On this page, you will find some simple and practical examples of how to use CUDD.<br>
+The full documentation for CUDD documentation is available at: <a href="http://vlsi.colorado.edu/personal/fabio/CUDD/">http://vlsi.colorado.edu/personal/fabio/CUDD/</a><br><b><i>Note: All Credits go to the author of the package, Fabio Somenzi at the Dept. of Electrical and Computer Engineering, University of Colorado at Boulder</i></b></p>
+<h1>Table of contents</h1>
+<div class="all-questions"><nav role="navigation" class="table-of-contents"><h2>On this page:</h2><ul><li><a href="https://davidkebo.com/cudd#cudd1">What is CUDD?</a></li><li><a href="https://davidkebo.com/cudd#cudd2">Where to download CUDD?</a></li><li><a href="https://davidkebo.com/cudd#cudd3">How to install CUDD?</a></li><li><a href="https://davidkebo.com/cudd#cudd4">Tutorial 1: Write your first program with CUDD</a></li><li><a href="https://davidkebo.com/cudd#cudd5">How to debug your program</a></li><li><a href="https://davidkebo.com/cudd#cudd6">Visualize the BDD</a></li><li><a href="https://davidkebo.com/cudd#cudd7">Tutorial 2: BDD of Boolean functions</a></li><li><a href="https://davidkebo.com/cudd#cudd7x">BDD for the Exclusive-OR Boolean function</a></li><li><a href="https://davidkebo.com/cudd#cudd8">BDD for the AND Boolean function</a></li><li><a href="https://davidkebo.com/cudd#cudd9">BDD for the OR Boolean function</a></li><li><a href="https://davidkebo.com/cudd#cudd10">BDD for the XNOR Boolean function</a></li><li><a href="https://davidkebo.com/cudd#cudd11">BDD for the NAND Boolean function</a></li><li><a href="https://davidkebo.com/cudd#cudd12">BDD for the NOR Boolean function</a></li><li><a href="https://davidkebo.com/cudd#cudd13">BDD for the NOT Boolean function</a></li><li><a href="https://davidkebo.com/cudd#cudd14">BDD for the function f = x0'x1'x2'x3'</a></li><li><a href="https://davidkebo.com/cudd#cudd15">Tutorial 3: Variable reordering</a></li><li><a href="https://davidkebo.com/cudd#cudd16">Tutorial 4: Additional functions</a></li><li><a href="https://davidkebo.com/cudd#cudd17">Algebraic Decision Diagram (ADD) for a fanout</a></li><li><a href="https://davidkebo.com/cudd#cudd18">Algebraic Decision Diagram (ADD) for a crossover</a></li></ul></nav>
+<h1 class="cudd" id="cudd1">What is CUDD?</h1>
+<p>CUDD stands for Colorado University Decision Diagram. It is a package for the manipulation of Binary Decision Diagrams (BDDs), Algebraic Decision Diagrams (ADDs) and Zero-suppressed Binary Decision Diagrams (ZDDs).</p>
+<h1 class="cudd" id="cudd2">Where to download CUDD?</h1>
+<p>The CUDD package is available via anonymous FTP from vlsi.colorado.edu. You can download the CUDD package from the server using an FTP client such as <a href="https://filezilla-project.org/download.php">FileZilla</a> or you can use the <b>ftp</b> command from the command line.</p>
+<h3>Option 1: Use an FTP client</h3>
+<p>Host: vlsi.colorado.edu<br>
+Protocol: FTP<br>
+Logon type: anonymous</p>
+<h3>Option 2: Use the command line</h3>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%">Davids-MacBook-Pro:~ davidkebo<span style="color: #19177C">$ </span>ftp vlsi.colorado.edu
+Name <span style="color: #666666">(</span>vlsi.colorado.edu:davidkebo<span style="color: #666666">)</span>: anonymous
+Password: your email address
+ftp&gt; <span style="color: #008000">cd </span>pub
+</pre></div>
+<h3>Option 3: You can download versions of CUDD directly here:</h3>
+<p><a href="https://davidkebo.com/source/cudd_versions/cudd-3.0.0.tar.gz">cudd-3.0.0</a><br><a href="https://davidkebo.com/source/cudd_versions/cudd-2.5.1.tar.gz">cudd-2.5.1</a><br><a href="https://davidkebo.com/source/cudd_versions/cudd-2.5.0.tar.gz">cudd-2.5.0</a><br><a href="https://davidkebo.com/source/cudd_versions/cudd-2.4.2.tar.gz">cudd-2.4.2</a></p>
+<p>These directories contain the decision diagram package, and a few support libraries</p>
+<h1 class="cudd" id="cudd3">How to install CUDD?</h1>
+<p>To build an application that uses the CUDD package, you should add:</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #BC7A00">#include "util.h"</span>
+<span style="color: #BC7A00">#include "cudd.h"</span>
+</pre></div>
+<p>to your source files, and should link libcudd.a , libmtr.a , libst.a , and libutil.a  to your executable. (All these libraries are part of the distribution.) Some platforms require specific compiler and linker flags. Refer to the Makefile  in the top-level directory of the distribution.</p>
+<p>An example of a Makefile is the following: <a href="https://davidkebo.com/source/cudd_tutorials/Makefile">Makefile</a></p>
+<h1 class="cudd" id="cudd4">Tutorial 1: Write your first program with CUDD</h1>
+<p>The basic use of CUDD is easy: </p>
+<ul><li>Initialize a DdManager using Cudd_Init</li>
+<li>Create the DD</li>
+<li>Shut down the DdManager using Cudd_Quit(DdManager* ddmanager)</li>
+</ul><h3>Sample code for the main program</h3>
+<p>The program below creates a single BDD variable</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable*/</span>
+    Cudd_Ref(bdd); <span style="color: #408080; font-style: italic">/*Increases the reference count of a node*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre></div>
+<h1 class="cudd" id="cudd5">How to debug your program</h1>
+<p>One handy debugging tool in the CUDD package is a function called <b><i>Cudd_PrintDebug()</i></b><br><b><i>Cudd_PrintDebug()</i></b> takes as parameters the following (in the listed order):</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%">DdManager<span style="color: #666666">*</span> ddmanager; <span style="color: #408080; font-style: italic">//The manager</span>
+DdNode<span style="color: #666666">*</span> ddnode; <span style="color: #408080; font-style: italic">//The Decision diagram</span>
+<span style="color: #B00040">int</span> n;
+<span style="color: #B00040">int</span> pr; <span style="color: #408080; font-style: italic">//The level of debugging </span>
+</pre></div>
+<p>pr can be set from 0 to any number, depending on the amount of information you want to display.<br>
+This function prints out useful statistics including the number of nodes, the number of leaves, and the number of minterms.</p>
+<h3>Sample function for printing a DD summary</h3>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #408080; font-style: italic">/**</span>
+<span style="color: #408080; font-style: italic"> * Print a dd summary</span>
+<span style="color: #408080; font-style: italic"> * pr = 0 : prints nothing</span>
+<span style="color: #408080; font-style: italic"> * pr = 1 : prints counts of nodes and minterms</span>
+<span style="color: #408080; font-style: italic"> * pr = 2 : prints counts + disjoint sum of product</span>
+<span style="color: #408080; font-style: italic"> * pr = 3 : prints counts + list of nodes</span>
+<span style="color: #408080; font-style: italic"> * pr &gt; 3 : prints counts + disjoint sum of product + list of nodes</span>
+<span style="color: #408080; font-style: italic"> * @param the dd node</span>
+<span style="color: #408080; font-style: italic"> */</span>
+<span style="color: #B00040">void</span> <span style="color: #0000FF">print_dd</span> (DdNode	<span style="color: #666666">*</span>dd, <span style="color: #B00040">int</span> n, <span style="color: #B00040">int</span> pr, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>name)
+{
+    printf(<span style="color: #BA2121">"%s</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">"</span>, name);
+    printf(<span style="color: #BA2121">"DdManager nodes: %ld | "</span>, Cudd_ReadNodeCount(gbm)); <span style="color: #408080; font-style: italic">/*Reports the number of live nodes in BDDs and ADDs*/</span>
+    printf(<span style="color: #BA2121">"DdManager vars: %d | "</span>, Cudd_ReadSize(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the number of BDD variables in existance*/</span>
+    printf(<span style="color: #BA2121">"DdNode nodes: %d | "</span>, Cudd_DagSize(dd)); <span style="color: #408080; font-style: italic">/*Reports the number of nodes in the BDD*/</span>
+	printf(<span style="color: #BA2121">"DdNode vars: %d | "</span>, Cudd_SupportSize(gbm, dd) ); <span style="color: #408080; font-style: italic">/*Returns the number of variables in the BDD*/</span>
+    printf(<span style="color: #BA2121">"DdManager reorderings: %d | "</span>, Cudd_ReadReorderings(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the number of times reordering has occurred*/</span>
+    printf(<span style="color: #BA2121">"DdManager memory: %ld |</span><span style="color: #BB6622; font-weight: bold">\n\n</span><span style="color: #BA2121">"</span>, Cudd_ReadMemoryInUse(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the memory in use by the manager measured in bytes*/</span>
+    Cudd_PrintDebug(gbm, dd, n, pr);	<span style="color: #408080; font-style: italic">// Prints to the standard output a DD and its statistics: number of nodes, number of leaves, number of minterms.</span>
+}
+</pre></div>
+<p style="margin-top:40px;">Another handy function is <b><i>Cudd_PrintInfo()</i></b><br><b><i>Cudd_PrintInfo()</i></b> prints out statistics and settings for a CUDD manager:<br>
+You can get a lot of useful information from <b><i>Cudd_PrintInfo()</i></b>. The lines below show the statistics dumped to a file:</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%">**** CUDD modifiable parameters ****
+Hard limit for cache size: 699050
+Cache hit threshold for resizing: 30%
+Garbage collection enabled: yes
+Limit for fast unique table growth: 419430
+Maximum number of variables sifted per reordering: 1000
+Maximum number of variable swaps per reordering: 2000000
+Maximum growth while sifting a variable: 1.2
+Dynamic reordering of BDDs enabled: no
+Default BDD reordering method: 4
+Dynamic reordering of ZDDs enabled: no
+Default ZDD reordering method: 4
+Realignment of ZDDs to BDDs enabled: no
+Realignment of BDDs to ZDDs enabled: no
+Dead nodes counted in triggering reordering: no
+Group checking criterion: 7
+Recombination threshold: 0
+Symmetry violation threshold: 0
+Arc violation threshold: 0
+GA population size: 0
+Number of crossovers for GA: 0
+Next reordering threshold: 4004
+**** CUDD non-modifiable parameters ****
+Memory in use: 8949888
+Peak number of nodes: 1022
+Peak number of live nodes: 19
+Number of BDD variables: 4
+Number of ZDD variables: 0
+Number of cache entries: 262144
+Number of cache look-ups: 12
+Number of cache hits: 0
+Number of cache insertions: 14
+Number of cache collisions: 0
+Number of cache deletions: 0
+Cache used slots = 0.01% (expected 0.01%)
+Soft limit for cache size: 5120
+Number of buckets in unique table: 1280
+Used buckets in unique table: 1.80% (expected 1.78%)
+Number of BDD and ADD nodes: 23
+Number of ZDD nodes: 0
+Number of dead BDD and ADD nodes: 8
+Number of dead ZDD nodes: 0
+Total number of nodes allocated: 23
+Total number of nodes reclaimed: 0
+Garbage collections so far: 0
+Time for garbage collection: 0.00 sec
+Reorderings so far: 0
+Time for reordering: 0.00 sec
+</pre></div>
+<h1 class="cudd" id="cudd6">Visualize the BDD</h1>
+<p>So, you successfully created a BDD, now what?</p>
+<p>After you create a BDD or an ADD of type DdNode, you can plot it as a .dot file using the <b>Cudd_DumpDot()</b> function. You should provide an output file pointer, the DD manager, the number of nodes and the node array pointer. The following functions show how to print a DD to a file.</p>
+<p>Here is a simple way to visualize the BDD as an actual graph.</p>
+<h3>Sample function for printing a dd summary</h3>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #408080; font-style: italic">/**</span>
+<span style="color: #408080; font-style: italic"> * Writes a dot file representing the argument DDs</span>
+<span style="color: #408080; font-style: italic"> * @param the node object</span>
+<span style="color: #408080; font-style: italic"> */</span>
+<span style="color: #B00040">void</span> <span style="color: #0000FF">write_dd</span> (DdNode <span style="color: #666666">*</span>dd, <span style="color: #B00040">char</span><span style="color: #666666">*</span> filename)
+{
+    <span style="color: #B00040">FILE</span> <span style="color: #666666">*</span>outfile; <span style="color: #408080; font-style: italic">// output file pointer for .dot file</span>
+    outfile <span style="color: #666666">=</span> fopen(filename,<span style="color: #BA2121">"w"</span>);
+    DdNode <span style="color: #666666">**</span>ddnodearray <span style="color: #666666">=</span> (DdNode<span style="color: #666666">**</span>)malloc(<span style="color: #008000; font-weight: bold">sizeof</span>(DdNode<span style="color: #666666">*</span>)); <span style="color: #408080; font-style: italic">// initialize the function array</span>
+    ddnodearray[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> dd;
+    Cudd_DumpDot(gbm, <span style="color: #666666">1</span>, ddnodearray, <span style="color: #008000">NULL</span>, <span style="color: #008000">NULL</span>, outfile); <span style="color: #408080; font-style: italic">// dump the function to .dot file</span>
+    free(ddnodearray);
+    fclose (outfile); <span style="color: #408080; font-style: italic">// close the file */</span>
+}
+</pre></div>
+<p>
+Once you generate the .dot file, you can open it using the GraphViz tool.<br>
+Graphviz is open source graph visualization software. It works very well for representing structural information as diagrams of abstract graphs and networks. GraphViz is available for download here: <a href="http://www.graphviz.org/download.php">www.graphviz.org/download.php</a>.<br>
+Just locate the .dot file and open it with Graphviz.
+</p>
+<h3>Sample program for printing a creating and printing a dd (Complete)</h3>
+<p>The entire program looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #408080; font-style: italic">/*</span>
+<span style="color: #408080; font-style: italic">* FILENAME: transfer.c</span>
+<span style="color: #408080; font-style: italic">* Overview: BDD tutorial</span>
+<span style="color: #408080; font-style: italic">* AUTHOR: David Kebo Houngninou</span>
+<span style="color: #408080; font-style: italic">*/</span>
+
+<span style="color: #BC7A00">#include &lt;sys/types.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;sys/time.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;stdio.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;string.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;time.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;math.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;stdlib.h&gt;</span>
+<span style="color: #BC7A00">#include "cudd.h"</span>
+
+<span style="color: #408080; font-style: italic">/**</span>
+<span style="color: #408080; font-style: italic"> * Print a dd summary</span>
+<span style="color: #408080; font-style: italic"> * pr = 0 : prints nothing</span>
+<span style="color: #408080; font-style: italic"> * pr = 1 : prints counts of nodes and minterms</span>
+<span style="color: #408080; font-style: italic"> * pr = 2 : prints counts + disjoint sum of product</span>
+<span style="color: #408080; font-style: italic"> * pr = 3 : prints counts + list of nodes</span>
+<span style="color: #408080; font-style: italic"> * pr &gt; 3 : prints counts + disjoint sum of product + list of nodes</span>
+<span style="color: #408080; font-style: italic"> * @param the dd node</span>
+<span style="color: #408080; font-style: italic"> */</span>
+<span style="color: #B00040">void</span> <span style="color: #0000FF">print_dd</span> (DdManager <span style="color: #666666">*</span>gbm, DdNode <span style="color: #666666">*</span>dd, <span style="color: #B00040">int</span> n, <span style="color: #B00040">int</span> pr )
+{
+    printf(<span style="color: #BA2121">"DdManager nodes: %ld | "</span>, Cudd_ReadNodeCount(gbm)); <span style="color: #408080; font-style: italic">/*Reports the number of live nodes in BDDs and ADDs*/</span>
+    printf(<span style="color: #BA2121">"DdManager vars: %d | "</span>, Cudd_ReadSize(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the number of BDD variables in existence*/</span>
+    printf(<span style="color: #BA2121">"DdManager reorderings: %d | "</span>, Cudd_ReadReorderings(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the number of times reordering has occurred*/</span>
+    printf(<span style="color: #BA2121">"DdManager memory: %ld </span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">"</span>, Cudd_ReadMemoryInUse(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the memory in use by the manager measured in bytes*/</span>
+    Cudd_PrintDebug(gbm, dd, n, pr);  <span style="color: #408080; font-style: italic">// Prints to the standard output a DD and its statistics: number of nodes, number of leaves, number of minterms.</span>
+}
+
+
+<span style="color: #408080; font-style: italic">/**</span>
+<span style="color: #408080; font-style: italic"> * Writes a dot file representing the argument DDs</span>
+<span style="color: #408080; font-style: italic"> * @param the node object</span>
+<span style="color: #408080; font-style: italic"> */</span>
+<span style="color: #B00040">void</span> <span style="color: #0000FF">write_dd</span> (DdManager <span style="color: #666666">*</span>gbm, DdNode <span style="color: #666666">*</span>dd, <span style="color: #B00040">char</span><span style="color: #666666">*</span> filename)
+{
+    <span style="color: #B00040">FILE</span> <span style="color: #666666">*</span>outfile; <span style="color: #408080; font-style: italic">// output file pointer for .dot file</span>
+    outfile <span style="color: #666666">=</span> fopen(filename,<span style="color: #BA2121">"w"</span>);
+    DdNode <span style="color: #666666">**</span>ddnodearray <span style="color: #666666">=</span> (DdNode<span style="color: #666666">**</span>)malloc(<span style="color: #008000; font-weight: bold">sizeof</span>(DdNode<span style="color: #666666">*</span>)); <span style="color: #408080; font-style: italic">// initialize the function array</span>
+    ddnodearray[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> dd;
+    Cudd_DumpDot(gbm, <span style="color: #666666">1</span>, ddnodearray, <span style="color: #008000">NULL</span>, <span style="color: #008000">NULL</span>, outfile); <span style="color: #408080; font-style: italic">// dump the function to .dot file</span>
+    free(ddnodearray);
+    fclose (outfile); <span style="color: #408080; font-style: italic">// close the file */</span>
+}
+
+<span style="color: #408080; font-style: italic">// This program creates a single BDD variable</span>
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable*/</span>
+    Cudd_Ref(bdd); <span style="color: #408080; font-style: italic">/*Increases the reference count of a node*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>); <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre></div>
+<h3>Graph representation of the BDD</h3>
+<p>Using Graphviz, you can visualize the BDD as a graph. The graph should look like this.</p>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/tutorial1.png" alt="CUDD"></p>
+<h3>Download Tutorial 1</h3>
+<p>You can download the full code for this example here:</p>
+<p><a href="https://davidkebo.com/source/cudd_tutorials/tutorial1.tar.gz">tutorial1.tar.gz</a></p>
+<hr><h1 class="cudd" id="cudd7">Tutorial 2: BDD of Boolean functions</h1>
+<p>
+Common manipulations of BDDs can be accomplished by calling operators on variables.<br>
+The CUDD package includes Boolean functions that can be used for BDD operations such as <i><b>Cudd_Not, Cudd_bddAnd, Cudd_bddOr, Cudd_Xor</b></i>, etc.
+</p>
+<h1 class="cudd" id="cudd7x">BDD for the Exclusive-OR Boolean function</h1>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for an Exclusive-OR</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x1</td>
+<td>x2</td>
+<td>f</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>1</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>1</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>0</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Logic gate for an Exclusive-OR</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/logic-xor.jpg" alt="CUDD"></p>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>BDD for an Exclusive-OR</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddxor.png" alt="CUDD"></p>
+</div>
+</div>
+<p>
+For the Exclusive-OR Boolean function, we use <i><b>Cudd_bddXor</b></i><br>
+The following fragment of code illustrates how to build the BDD for the function f = x1 ⊕ x2
+</p>
+<h3>Sample program for the XOR Boolean function</h3>
+<p>The main function looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd, <span style="color: #666666">*</span>x1, <span style="color: #666666">*</span>x2;
+    x1 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x1*/</span>
+    x2 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x2*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_bddXor(gbm, x1, x2); <span style="color: #408080; font-style: italic">/*Perform XOR Boolean operation*/</span>
+    Cudd_Ref(bdd);          <span style="color: #408080; font-style: italic">/*Update the reference count for the node just created.*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>);   <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>; 
+}
+</pre></div>
+<hr><h1 class="cudd" id="cudd8">BDD for the AND Boolean function</h1>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for an AND</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x1</td>
+<td>x2</td>
+<td>f</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>1</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Logic gate for a logic AND</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/logic-and.jpg" alt="CUDD"></p>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>BDD for a logic AND</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddand.png" alt="CUDD"></p>
+</div>
+</div>
+<p>
+For the AND Boolean function, we use <i><b>Cudd_bddAnd</b></i><br>
+The following fragment of code illustrates how to build the BDD for the function f = x1 ∧ x1
+</p>
+<h3>Sample program for the AND Boolean function</h3>
+<p>The main function looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd, <span style="color: #666666">*</span>x1, <span style="color: #666666">*</span>x2;
+    x1 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x1*/</span>
+    x2 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x2*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_bddAnd(gbm, x1, x2); <span style="color: #408080; font-style: italic">/*Perform AND Boolean operation*/</span>
+    Cudd_Ref(bdd);          <span style="color: #408080; font-style: italic">/*Update the reference count for the node just created.*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>);   <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>; 
+}
+</pre></div>
+<hr><h1 class="cudd" id="cudd9">BDD for the OR Boolean function</h1>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for a logic OR</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x1</td>
+<td>x2</td>
+<td>f</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>1</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>1</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>1</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Logic gate for a logic OR</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/logic-or.jpg" alt="CUDD"></p>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>BDD for a logic OR</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddor.png" alt="CUDD"></p>
+</div>
+</div>
+<p>
+For the OR Boolean function, we use <i><b>Cudd_bddOr</b></i><br>
+The following fragment of code illustrates how to build the BDD for the function f = x1 ∨ x2
+</p>
+<h3>Sample program for the OR Boolean function</h3>
+<p>The main function looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd, <span style="color: #666666">*</span>x1, <span style="color: #666666">*</span>x2;
+    x1 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x1*/</span>
+    x2 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x2*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_bddOr(gbm, x1, x2); <span style="color: #408080; font-style: italic">/*Perform OR Boolean operation*/</span>
+    Cudd_Ref(bdd);          <span style="color: #408080; font-style: italic">/*Update the reference count for the node just created.*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>);   <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>; 
+}
+</pre></div>
+<hr><h1 class="cudd" id="cudd10">BDD for the XNOR Boolean function</h1>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for an XNOR</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x1</td>
+<td>x2</td>
+<td>f</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>1</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>1</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Logic gate for an XNOR</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/logic-xnor.jpg" alt="CUDD"></p>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>BDD for an XNOR</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddxnor.png" alt="CUDD"></p>
+</div>
+</div>
+<p>
+For the XNOR Boolean function, we use <i><b>Cudd_bddXnor</b></i><br>
+The following fragment of code illustrates how to build the BDD for the function f = ¬ (x1 ⊕ x2)
+</p>
+<h3>Sample program for the XNOR Boolean function</h3>
+<p>The main function looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd, <span style="color: #666666">*</span>x1, <span style="color: #666666">*</span>x2;
+    x1 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x1*/</span>
+    x2 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x2*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_bddXnor(gbm, x1, x2); <span style="color: #408080; font-style: italic">/*Perform XNOR Boolean operation*/</span>
+    Cudd_Ref(bdd);          <span style="color: #408080; font-style: italic">/*Update the reference count for the node just created.*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>);   <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>; 
+}
+</pre></div>
+<hr><h1 class="cudd" id="cudd11">BDD for the NAND Boolean function</h1>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for an NAND</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x1</td>
+<td>x2</td>
+<td>f</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>1</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>1</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>1</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>0</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Logic gate for an NAND</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/logic-nand.jpg" alt="CUDD"></p>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>BDD for an NAND</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddnand.png" alt="CUDD"></p>
+</div>
+</div>
+<p>
+For the NAND Boolean function, we use <i><b>Cudd_bddNand</b></i><br>
+The following fragment of code illustrates how to build the BDD for the function f = ¬ (x1 ∧ x2)
+</p>
+<h3>Sample program for the OR Boolean function</h3>
+<p>The main function looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd, <span style="color: #666666">*</span>x1, <span style="color: #666666">*</span>x2;
+    x1 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x1*/</span>
+    x2 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x2*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_bddNand(gbm, x1, x2); <span style="color: #408080; font-style: italic">/*Perform NAND Boolean operation*/</span>
+    Cudd_Ref(bdd);          <span style="color: #408080; font-style: italic">/*Update the reference count for the node just created.*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>);   <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>; 
+}
+</pre></div>
+<hr><h1 class="cudd" id="cudd12">BDD for the NOR Boolean function</h1>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for an NOR</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x1</td>
+<td>x2</td>
+<td>f</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>1</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>0</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Logic gate for an NOR</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/logic-nor.jpg" alt="CUDD"></p>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>BDD for an NOR</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddnor.png" alt="CUDD"></p>
+</div>
+</div>
+<p>
+For the NOR Boolean function, we use <i><b>Cudd_bddNor</b></i><br>
+The following fragment of code illustrates how to build the BDD for the function f = ¬ (x1 ∨ x2)
+</p>
+<h3>Sample program for the NOR Boolean function</h3>
+<p>The main function looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd, <span style="color: #666666">*</span>x1, <span style="color: #666666">*</span>x2;
+    x1 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x1*/</span>
+    x2 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x2*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_bddNor(gbm, x1, x2); <span style="color: #408080; font-style: italic">/*Perform NOR Boolean operation*/</span>
+    Cudd_Ref(bdd);          <span style="color: #408080; font-style: italic">/*Update the reference count for the node just created.*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>);   <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>; 
+}
+</pre></div>
+<hr><h1 class="cudd" id="cudd13">BDD for the NOT Boolean function</h1>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for a NOT</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x1</td>
+<td>f</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>1</td>
+</tr><tr><td>1</td>
+<td>0</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Logic gate for a NOT</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/logic-not.jpg" alt="CUDD"></p>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>BDD for a NOT</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddnot.png" alt="CUDD"></p>
+</div>
+</div>
+<p>
+For the NOT Boolean function, we use <i><b>Cudd_Not</b></i><br>
+The following fragment of code illustrates how to build the BDD for the function f =  ¬x1
+</p>
+<h3>Sample program for the NOT Boolean function</h3>
+<p>The main function looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd, <span style="color: #666666">*</span>x1;
+    x1 <span style="color: #666666">=</span> Cudd_bddNewVar(gbm); <span style="color: #408080; font-style: italic">/*Create a new BDD variable x1*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_Not(x1); <span style="color: #408080; font-style: italic">/*Perform NOT Boolean operation*/</span>
+    Cudd_Ref(bdd);          <span style="color: #408080; font-style: italic">/*Update the reference count for the node just created.*/</span>
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>);   <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre></div>
+<hr><h1 class="cudd" id="cudd14">BDD for the function f = x0'x1'x2'x3'</h1>
+<p>The truth table for this function is the following:</p>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for f = x0'x1'x2'x3'</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x0</td>
+<td>x1</td>
+<td>x2</td>
+<td>x3</td>
+<td>f</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr><tr><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Logic circuit for f = x0'x1'x2'x3'</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/logic-fx.png" alt="CUDD"></p>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>BDD for f = x0'x1'x2'x3'</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/tutorial2.png" alt="CUDD"></p>
+</div>
+</div>
+<h3>Sample program to create a BDD for the function f = x0'x1'x2'x3'</h3>
+<p>The entire program looks like this</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #408080; font-style: italic">/*</span>
+<span style="color: #408080; font-style: italic">* FILENAME: tutorial.c</span>
+<span style="color: #408080; font-style: italic">* Overview: BDD tutorial</span>
+<span style="color: #408080; font-style: italic">* AUTHOR: David Kebo Houngninou</span>
+<span style="color: #408080; font-style: italic">*/</span>
+
+<span style="color: #BC7A00">#include &lt;sys/types.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;sys/time.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;stdio.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;string.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;time.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;math.h&gt;</span>
+<span style="color: #BC7A00">#include &lt;stdlib.h&gt;</span>
+<span style="color: #BC7A00">#include "cudd.h"</span>
+
+<span style="color: #408080; font-style: italic">/**</span>
+<span style="color: #408080; font-style: italic"> * Print a dd summary</span>
+<span style="color: #408080; font-style: italic"> * pr = 0 : prints nothing</span>
+<span style="color: #408080; font-style: italic"> * pr = 1 : prints counts of nodes and minterms</span>
+<span style="color: #408080; font-style: italic"> * pr = 2 : prints counts + disjoint sum of product</span>
+<span style="color: #408080; font-style: italic"> * pr = 3 : prints counts + list of nodes</span>
+<span style="color: #408080; font-style: italic"> * pr &gt; 3 : prints counts + disjoint sum of product + list of nodes</span>
+<span style="color: #408080; font-style: italic"> * @param the dd node</span>
+<span style="color: #408080; font-style: italic"> */</span>
+<span style="color: #B00040">void</span> <span style="color: #0000FF">print_dd</span> (DdManager <span style="color: #666666">*</span>gbm, DdNode <span style="color: #666666">*</span>dd, <span style="color: #B00040">int</span> n, <span style="color: #B00040">int</span> pr )
+{
+    printf(<span style="color: #BA2121">"DdManager nodes: %ld | "</span>, Cudd_ReadNodeCount(gbm)); <span style="color: #408080; font-style: italic">/*Reports the number of live nodes in BDDs and ADDs*/</span>
+    printf(<span style="color: #BA2121">"DdManager vars: %d | "</span>, Cudd_ReadSize(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the number of BDD variables in existence*/</span>
+    printf(<span style="color: #BA2121">"DdManager reorderings: %d | "</span>, Cudd_ReadReorderings(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the number of times reordering has occurred*/</span>
+    printf(<span style="color: #BA2121">"DdManager memory: %ld </span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">"</span>, Cudd_ReadMemoryInUse(gbm) ); <span style="color: #408080; font-style: italic">/*Returns the memory in use by the manager measured in bytes*/</span>
+    Cudd_PrintDebug(gbm, dd, n, pr);  <span style="color: #408080; font-style: italic">// Prints to the standard output a DD and its statistics: number of nodes, number of leaves, number of minterms.</span>
+}
+
+
+<span style="color: #408080; font-style: italic">/**</span>
+<span style="color: #408080; font-style: italic"> * Writes a dot file representing the argument DDs</span>
+<span style="color: #408080; font-style: italic"> * @param the node object</span>
+<span style="color: #408080; font-style: italic"> */</span>
+<span style="color: #B00040">void</span> <span style="color: #0000FF">write_dd</span> (DdManager <span style="color: #666666">*</span>gbm, DdNode <span style="color: #666666">*</span>dd, <span style="color: #B00040">char</span><span style="color: #666666">*</span> filename)
+{
+    <span style="color: #B00040">FILE</span> <span style="color: #666666">*</span>outfile; <span style="color: #408080; font-style: italic">// output file pointer for .dot file</span>
+    outfile <span style="color: #666666">=</span> fopen(filename,<span style="color: #BA2121">"w"</span>);
+    DdNode <span style="color: #666666">**</span>ddnodearray <span style="color: #666666">=</span> (DdNode<span style="color: #666666">**</span>)malloc(<span style="color: #008000; font-weight: bold">sizeof</span>(DdNode<span style="color: #666666">*</span>)); <span style="color: #408080; font-style: italic">// initialize the function array</span>
+    ddnodearray[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> dd;
+    Cudd_DumpDot(gbm, <span style="color: #666666">1</span>, ddnodearray, <span style="color: #008000">NULL</span>, <span style="color: #008000">NULL</span>, outfile); <span style="color: #408080; font-style: italic">// dump the function to .dot file</span>
+    free(ddnodearray);
+    fclose (outfile); <span style="color: #408080; font-style: italic">// close the file */</span>
+}
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span> (<span style="color: #B00040">int</span> argc, <span style="color: #B00040">char</span> <span style="color: #666666">*</span>argv[])
+{
+    <span style="color: #B00040">char</span> filename[<span style="color: #666666">30</span>];
+    DdManager <span style="color: #666666">*</span>gbm; <span style="color: #408080; font-style: italic">/* Global BDD manager. */</span>
+    gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">/* Initialize a new BDD manager. */</span>
+    DdNode <span style="color: #666666">*</span>bdd, <span style="color: #666666">*</span>var, <span style="color: #666666">*</span>tmp_neg, <span style="color: #666666">*</span>tmp;
+    <span style="color: #B00040">int</span> i;
+    bdd <span style="color: #666666">=</span> Cudd_ReadOne(gbm); <span style="color: #408080; font-style: italic">/*Returns the logic one constant of the manager*/</span>
+    Cudd_Ref(bdd); <span style="color: #408080; font-style: italic">/*Increases the reference count of a node*/</span>
+    
+    <span style="color: #008000; font-weight: bold">for</span> (i <span style="color: #666666">=</span> <span style="color: #666666">3</span>; i <span style="color: #666666">&gt;=</span> <span style="color: #666666">0</span>; i<span style="color: #666666">--</span>) {
+      var <span style="color: #666666">=</span> Cudd_bddIthVar(gbm,i); <span style="color: #408080; font-style: italic">/*Create a new BDD variable*/</span>
+      tmp_neg <span style="color: #666666">=</span> Cudd_Not(var); <span style="color: #408080; font-style: italic">/*Perform NOT Boolean operation*/</span>
+      tmp <span style="color: #666666">=</span> Cudd_bddAnd(gbm, tmp_neg, bdd); <span style="color: #408080; font-style: italic">/*Perform AND Boolean operation*/</span>
+      Cudd_Ref(tmp);
+      Cudd_RecursiveDeref(gbm,bdd);
+      bdd <span style="color: #666666">=</span> tmp;
+    }
+    
+    bdd <span style="color: #666666">=</span> Cudd_BddToAdd(gbm, bdd); <span style="color: #408080; font-style: italic">/*Convert BDD to ADD for display purpose*/</span>
+    print_dd (gbm, bdd, <span style="color: #666666">2</span>,<span style="color: #666666">4</span>); <span style="color: #408080; font-style: italic">/*Print the dd to standard output*/</span>
+    sprintf(filename, <span style="color: #BA2121">"./bdd/graph.dot"</span>); <span style="color: #408080; font-style: italic">/*Write .dot filename to a string*/</span>
+    write_dd(gbm, bdd, filename);  <span style="color: #408080; font-style: italic">/*Write the resulting cascade dd to a file*/</span>
+    Cudd_Quit(gbm);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>; 
+}
+</pre></div>
+<h3>Download Tutorial 2</h3>
+<p>You can download the full code for this example here:</p>
+<p><a href="https://davidkebo.com/source/cudd_tutorials/tutorial2.tar.gz">tutorial2.tar.gz</a></p>
+<hr><h1 class="cudd" id="cudd15">Tutorial 3: Variable reordering</h1>
+<p>The purpose of variable reordering is to reduce the size (number of nodes) of the BDD by optimizing the order of the variables. Finding an optimal order for a BDD is an NP-complete problem; therefore, several heuristic methods were developed for variable ordering. The CUDD package provides a rich set of dynamic reordering algorithms that you can apply to your BDD.</p>
+<p>After initializing the BDD manager, we can make a call to a variable reordering method (Choose only one of the options below)</p>
+<!-- HTML generated using hilite.me --><div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #408080; font-style: italic">// Initialize a new BDD manager</span>
+gbm <span style="color: #666666">=</span> Cudd_Init(<span style="color: #666666">0</span>,<span style="color: #666666">0</span>,CUDD_UNIQUE_SLOTS,CUDD_CACHE_SLOTS,<span style="color: #666666">0</span>);
+
+<span style="color: #408080; font-style: italic">//Option 1: Dynamic reordering by sifting</span>
+Cudd_AutodynEnable(gbm, CUDD_REORDER_SYMM_SIFT);
+Cudd_ReduceHeap(gbm, CUDD_REORDER_SYMM_SIFT, <span style="color: #666666">3000</span>);
+
+<span style="color: #408080; font-style: italic">//Option 2: Dynamic reordering by window permutation</span>
+Cudd_AutodynEnable(gbm, CUDD_REORDER_WINDOW2);
+Cudd_ReduceHeap(gbm, CUDD_REORDER_WINDOW2, <span style="color: #666666">3000</span>);
+
+<span style="color: #408080; font-style: italic">//Option 3: Dynamic reordering by simulated annealing</span>
+Cudd_AutodynEnable(gbm, CUDD_REORDER_ANNEALING);
+Cudd_ReduceHeap(gbm, CUDD_REORDER_ANNEALING, <span style="color: #666666">3000</span>);
+
+<span style="color: #408080; font-style: italic">//Option 4: Dynamic reordering by genetic algorithm</span>
+Cudd_AutodynEnable(gbm, CUDD_REORDER_GENETIC);
+Cudd_ReduceHeap(gbm, CUDD_REORDER_GENETIC, <span style="color: #666666">3000</span>);
+
+<span style="color: #408080; font-style: italic">//Option 5: Dynamic reordering by swapping</span>
+Cudd_AutodynEnable(gbm, CUDD_REORDER_RANDOM);
+Cudd_ReduceHeap(gbm, CUDD_REORDER_RANDOM, <span style="color: #666666">3000</span>);
+
+<span style="color: #408080; font-style: italic">//Option 6: No reordering</span>
+Cudd_AutodynDisable (gbm);
+</pre></div>
+<hr><h1 class="cudd" id="cudd16">Tutorial 4: Additional functions</h1>
+<h1 class="cudd" id="cudd17">Algebraic Decision Diagram (ADD) for a fanout</h1>
+<p>The fanout of a logic gate output is the number of gate inputs it can feed. A fanout can also be modeled as a Boolean function</p>
+<p>
+An Algebraic Decision Diagram (ADD) is a BDD with a set of constant values different than the set {0,1}.<br>
+Instead of using a BDD, we use an ADD to represent a fanout because the leaf nodes have values different than 0 and 1.
+</p>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for a fanout</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x</td>
+<td>f1</td>
+<td>f2</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>1</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Representation of a fanout</h4>
+<p>    <img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddfanout.jpg" alt="CUDD"></p></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>ADD for a fanout</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddfanout.png" alt="CUDD"></p>
+</div>
+</div>
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #888888">/**Function********************************************************************</span>
+
+<span style="color: #888888">  Synopsis    [Create a ADD from different sizes of fanouts]</span>
+
+<span style="color: #888888">  Description [The Else branch is always a zero (0)</span>
+<span style="color: #888888"> 	Depending on the number of fanouts the Then branch varies between: (3 or 7 or 15 or 31 etc.)]</span>
+
+<span style="color: #888888">  @param the number of fanout branches</span>
+<span style="color: #888888">******************************************************************************/</span>
+DdNode <span style="color: #333333">*</span> <span style="color: #0066BB; font-weight: bold">Cudd_fanout</span> (<span style="color: #333399; font-weight: bold">int</span> fanouts)
+{
+    DdNode <span style="color: #333333">*</span>var <span style="color: #333333">=</span> Cudd_addNewVar(gbm); <span style="color: #888888">/*Root node of the fanout*/</span>
+    Cudd_Ref(var);
+    <span style="color: #333399; font-weight: bold">int</span> coef <span style="color: #333333">=</span> pow(<span style="color: #0000DD; font-weight: bold">2</span>, fanouts)<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>; <span style="color: #888888">/*Calculate the max value depending on the number of fanouts*/</span>
+    DdNode <span style="color: #333333">*</span>retval <span style="color: #333333">=</span> Cudd_addIte(gbm, var,  Cudd_addConst (gbm, (CUDD_VALUE_TYPE)coef), Cudd_addConst(gbm, (CUDD_VALUE_TYPE)<span style="color: #0000DD; font-weight: bold">0</span>)); <span style="color: #888888">/*Else branch=0, Then branch=(3 or 7 or 15 or 31 etc.)*/</span>
+    Cudd_RecursiveDeref(gbm,var);
+    <span style="color: #008800; font-weight: bold">return</span> retval;
+}
+</pre></div>
+<hr><h1 class="cudd" id="cudd18">Algebraic Decision Diagram (ADD) for a crossover</h1>
+<p>A crossover represents two wires crossing each other. A crossover can also be modeled as a Boolean function</p>
+<p>
+An Algebraic Decision Diagram (ADD) is a BDD with a set of constant values different than the set {0,1}.<br>
+Instead of using a BDD, we use an ADD to represent a crossover because the leaf nodes have values different than 0 and 1.
+</p>
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>The truth table for a crossover</h4>
+<table style="width: auto;" class="table table-condensed table-bordered center-table"><thead><tr><td>x1</td>
+<td>x2</td>
+<td>f1</td>
+<td>f2</td>
+</tr></thead><tbody><tr><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr><tr><td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr><tr><td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr><tr><td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr></tbody></table></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>Representation of a crossover</h4>
+<p>    <img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddcrossover.jpg" alt="CUDD"></p></div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+<h4>ADD for a crossover</h4>
+<p><img src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/cuddcrossover.png" alt="CUDD"></p>
+</div>
+</div>
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<pre style="margin: 0; line-height: 125%"><span style="color: #888888">/**Function********************************************************************</span>
+
+<span style="color: #888888">  Synopsis    [Creates a ADD for a crossover]</span>
+
+<span style="color: #888888">  Description [A crossover is the intersection (crossing) of two wires</span>
+<span style="color: #888888">  The terminal nodes of a crossover ADD are 0, 2, 1 and 3]</span>
+
+<span style="color: #888888">  @param none</span>
+<span style="color: #888888">******************************************************************************/</span>
+DdNode <span style="color: #333333">*</span> <span style="color: #0066BB; font-weight: bold">Cudd_crossover</span> ()
+{
+    DdNode <span style="color: #333333">*</span>var1 <span style="color: #333333">=</span> Cudd_addNewVar(gbm); <span style="color: #888888">/*First variable in the crossover DD*/</span>
+    Cudd_Ref(var1);
+    DdNode <span style="color: #333333">*</span>var2 <span style="color: #333333">=</span> Cudd_addNewVar(gbm); <span style="color: #888888">/*Second variable in the crossover DD*/</span>
+    Cudd_Ref(var2);
+    DdNode <span style="color: #333333">*</span>node1 <span style="color: #333333">=</span> Cudd_addIte(gbm,var2, Cudd_addConst (gbm, (CUDD_VALUE_TYPE)<span style="color: #0000DD; font-weight: bold">2</span>), Cudd_addConst(gbm, (CUDD_VALUE_TYPE)<span style="color: #0000DD; font-weight: bold">0</span>)); <span style="color: #888888">/*Else branch=0, Then branch=2*/</span>
+    Cudd_Ref(node1);
+    DdNode <span style="color: #333333">*</span>node2 <span style="color: #333333">=</span> Cudd_addIte(gbm,var2, Cudd_addConst (gbm, (CUDD_VALUE_TYPE)<span style="color: #0000DD; font-weight: bold">3</span>), Cudd_addConst(gbm, (CUDD_VALUE_TYPE)<span style="color: #0000DD; font-weight: bold">1</span>)); <span style="color: #888888">/*Else branch=1, Then branch=3*/</span>
+    Cudd_Ref(node2);
+
+    DdNode <span style="color: #333333">*</span>retval <span style="color: #333333">=</span> Cudd_addIte(gbm,var1, node2 ,node1);
+    Cudd_RecursiveDeref(gbm,var1);
+    Cudd_RecursiveDeref(gbm,var2);
+    Cudd_RecursiveDeref(gbm,node1);
+    Cudd_RecursiveDeref(gbm,node2);
+    <span style="color: #008800; font-weight: bold">return</span> retval;
+}
+</pre></div>
+</div>
+</article></div>
+</div>
+      
+  <div>
+    <div>Page tags</div>
+          <div>
+              <div><a href="https://davidkebo.com/taxonomy/term/2" hreflang="en">CUDD</a></div>
+          <div><a href="https://davidkebo.com/taxonomy/term/3" hreflang="en">Binary Decision Diagram</a></div>
+          <div><a href="https://davidkebo.com/taxonomy/term/4" hreflang="en">Algebraic Decision Diagram</a></div>
+          <div><a href="https://davidkebo.com/taxonomy/term/5" hreflang="en">Directed acyclic graph</a></div>
+          <div><a href="https://davidkebo.com/taxonomy/term/19" hreflang="en">Zero-suppressed Binary Decision Diagram</a></div>
+          <div><a href="https://davidkebo.com/taxonomy/term/20" hreflang="en">Colorado University Decision Diagram</a></div>
+          <div><a href="https://davidkebo.com/taxonomy/term/27" hreflang="en">Decision Tree</a></div>
+          <div><a href="https://davidkebo.com/taxonomy/term/28" hreflang="en">Boolean Algebra</a></div>
+              </div>
+      </div>
+
+  </div>
+
+</article>
+
+  </div>
+
+  </div>
+
+          </div>
+        </div>
+            <!---End content -->
+
+      <!--- Start Right SideBar -->
+            <!---End Right SideBar -->
+      
+    </div>
+    <!--End Content -->
+
+    <!--Start Content Bottom-->
+        <!--End Content Bottom-->
+  </div>
+</div>
+<!-- End layout -->
+
+
+
+
+
+
+<!-- Start bottom -->
+<!--End Bottom -->
+
+
+
+
+<!-- start: Footer -->
+<!--End Footer -->
+
+<!-- Start Footer Menu -->
+<!-- End Footer Menu -->
+
+<div class="copyright">
+  <div class="container">
+    <div class="row">
+
+      <!-- Copyright -->
+      <div class="col-sm-6 col-md-6">
+                
+          <p>David Kebo Houngninou· Copyright 2017· All rights reserved</p>        
+              </div>
+      <!-- End Copyright -->
+
+      <!-- Credit link -->
+            <!-- End Credit link -->
+      
+    </div>
+  </div>
+</div>
+
+
+<!-- Google map -->
+<!-- End Google map -->
+    
+    <script async="" src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/analytics.js.下载"></script><script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/15","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","ajaxPageState":{"libraries":"classy\/messages,classy\/node,core\/html5shiv,drupal8_zymphonies_theme\/bootstrap,drupal8_zymphonies_theme\/global-components,system\/base","theme":"drupal8_zymphonies_theme","theme_token":null},"ajaxTrustedUrl":[],"user":{"uid":0,"permissionsHash":"3921bfb9f17ed3d81d2200ab3dd0f7c728f465d0dad296306d82bbbe6c962dae"}}</script>
+<script src="./The CUDD package, BDD, ADD Tutorial and examples _ David Kebo_files/js_2tzpbXOsVa_VAbYyUnrabBLrA75OhmdN8EOG3kfqD0k.js.下载"></script>
+
+  
+
+</body></html>
